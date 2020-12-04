@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="foundation.css" rel="stylesheet">
+  <style>
+    .value {
+      font-size: .2rem;
+    }
+
+    #output>div {
+      border-bottom: 1px solid #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-container">
+
+    <div class="grid-x grid-padding-x">
+      <div class="large-12 cell">
+        <h2>Cookie Parser</h2>
+        Paste your cookie below. Obtain it by entering
+        <pre>document.cookie</pre> in your dev toolbar.
+        <textarea rows="10"></textarea><br />
+        <input type="button" value="Parse" id="doit_btn" />
+        <div class="grid-x grid-padding-x">
+          <div class="large-12 cell" id="output"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      {
+        const doItBtn = document.getElementById("doit_btn")
+
+        doItBtn.onclick = () => {
+          const cookie = document.getElementsByTagName('textarea')[0].value
+          const cookies = cookie.split(';')
+          const output = document.getElementById("output")
+          output.innerHTML = `<div class="grid-x grid-padding-x"><div class='large-12 cell' id='length'>${cookies.length} cookies</div></div>`
+          output.innerHTML += `<div class="grid-x grid-padding-x">` +
+            `<div class='large-4 cell'>name</div>` +
+            `<div class='large-2 cell'>size</div>` +
+            `<div class='large-6 cell'>value</div></div>`
+
+          let totalSize = 0;
+          cookies.forEach(c => {
+            const pair = c.split('=')
+            const size = new Blob([c]).size
+            totalSize += size
+            output.innerHTML += `<div class="grid-x grid-padding-x">` +
+              `<div class='large-4 cell'>${pair[0]}</div>` +
+              `<div class='large-2 cell'>${size} byte (${(size / 1024).toFixed(2)}kb)</div>` +
+              `<div class='value large-6 cell'>${pair[1]}</div></div>`
+          })
+
+          document.getElementById('length').innerHTML += `, ${totalSize} bytes (${(totalSize / 1024).toFixed(2)}kb)`
+        }
+      }
+    </script>
+</body>
+
+</html>
