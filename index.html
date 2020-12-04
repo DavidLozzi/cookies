@@ -13,7 +13,7 @@
       <div class="large-12 cell">
         <h2>Cookie Parser</h2>
         Paste your cookie below. Obtain it by entering
-        <code>document.cookie</code> in your dev toolbar.
+        <code>cookieStore.getAll().then((a)=>console.log(JSON.stringify(a)))</code> in your dev toolbar.
         <textarea rows="10"></textarea><br />
         <button type="button" class="success button" id="doit_btn">Parse It</button><br /><br />
 
@@ -53,20 +53,30 @@
           output.innerHTML += `<div class="grid-x grid-padding-x header">` +
             `<div class='large-4 cell'>name</div>` +
             `<div class='large-2 cell'>size</div>` +
-            `<div class='large-6 cell'>value</div></div>`
+            `<div class='large-2 cell' title='adds additional estimated attributes like expires, path, and domain'>est. size*</div>` +
+            `<div class='large-4 cell'>value</div></div>`
 
-          let totalSize = 0;
+          let totalSize = 0
+          let totalEstSize = 0
           cookies.forEach(c => {
             const pair = c.split('=')
             const size = new Blob([c]).size
+            const estSize = size + new Blob([`expires=${new Date()};path=/;domain=*.domain.com`]).size
             totalSize += size
+            totalEstSize += estSize
             output.innerHTML += `<div class="grid-x grid-padding-x">` +
               `<div class='large-4 cell'>${pair[0]}</div>` +
-              `<div class='large-2 cell'>${size} byte (${(size / 1024).toFixed(2)}kb)</div>` +
-              `<div class='value large-6 cell'>${pair[1]}</div></div>`
+              `<div class='large-2 cell'>${size}b (${(size / 1024).toFixed(2)}kb)</div>` +
+              `<div class='large-2 cell'>${estSize}b (${(estSize / 1024).toFixed(2)}kb)</div>` +
+              `<div class='value large-4 cell'>${pair[1]}</div></div>`
           })
 
-          document.getElementById('length').innerHTML += `, ${totalSize} bytes (${(totalSize / 1024).toFixed(2)}kb)`
+          output.innerHTML += '<div class="grid-x grid-padding-x footer">' +
+            "<div class='large-12 cell'>* adds additional estimated attributes like expires, path, and domain</div>" +
+            '</div>'
+
+          document.getElementById('length').innerHTML += `, ${totalSize} bytes (${(totalSize / 1024).toFixed(2)}kb), Estimated ${totalEstSize} bytes (${(totalEstSize / 1024).toFixed(2)}kb)`
+          window.scrollTo({ top: document.getElementById('output').offsetTop, behavior: 'smooth' })
         }
 
         const doItBtn = document.getElementById("doit_btn")

@@ -2,6 +2,15 @@ textarea {
   margin-top: 1rem;
 }
 
+button:hover {
+  position: relative;
+  top: -1px;
+}
+button:active {
+  position: relative;
+  top: 1px;
+}
+
 .value {
   font-size: .2rem;
 }
