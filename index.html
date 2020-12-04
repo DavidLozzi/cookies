@@ -15,7 +15,10 @@
         Paste your cookie below. Obtain it by entering
         <code>document.cookie</code> in your dev toolbar.
         <textarea rows="10"></textarea><br />
-        <button type="button" class="success button" id="doit_btn">Parse It</button>
+        <button type="button" class="success button" id="doit_btn">Parse It</button><br /><br />
+
+        <button type="button" class="success button" id="load_btn">Load &amp; Parse</button>
+        Alternatively, you can load the cookies for this current domain and parse them.
         <div class="grid-x grid-padding-x">
           <div class="large-12 cell" id="output"></div>
         </div>
@@ -42,9 +45,7 @@
     </div>
     <script>
       {
-        const doItBtn = document.getElementById("doit_btn")
-
-        doItBtn.onclick = () => {
+        const parseIt = () => {
           const cookie = document.getElementsByTagName('textarea')[0].value
           const cookies = cookie.split(';')
           const output = document.getElementById("output")
@@ -66,6 +67,17 @@
           })
 
           document.getElementById('length').innerHTML += `, ${totalSize} bytes (${(totalSize / 1024).toFixed(2)}kb)`
+        }
+
+        const doItBtn = document.getElementById("doit_btn")
+
+        doItBtn.onclick = parseIt;
+
+        const loadBtn = document.getElementById('load_btn')
+
+        loadBtn.onclick = () => {
+          document.getElementsByTagName('textarea')[0].value = document.cookie
+          parseIt()
         }
       }
     </script>
