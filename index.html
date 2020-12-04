@@ -3,15 +3,7 @@
 
 <head>
   <link href="foundation.css" rel="stylesheet">
-  <style>
-    .value {
-      font-size: .2rem;
-    }
-
-    #output>div {
-      border-bottom: 1px solid #333;
-    }
-  </style>
+  <link href="custom.css" rel="stylesheet">
 </head>
 
 <body>
@@ -21,12 +13,31 @@
       <div class="large-12 cell">
         <h2>Cookie Parser</h2>
         Paste your cookie below. Obtain it by entering
-        <pre>document.cookie</pre> in your dev toolbar.
+        <code>document.cookie</code> in your dev toolbar.
         <textarea rows="10"></textarea><br />
-        <input type="button" value="Parse" id="doit_btn" />
+        <button type="button" class="success button" id="doit_btn">Parse It</button>
         <div class="grid-x grid-padding-x">
           <div class="large-12 cell" id="output"></div>
         </div>
+      </div>
+    </div>
+    <div class="grid-x grid-padding-x footer">
+      <div class="large-8 cell">
+
+        Cookie Standards
+        <ul>
+          <li>Maximum of 4096 bytes (4kb) per cookie (as measured by the sum of the
+            length of the cookie's name, value, and attributes).</li>
+          <li>Maximum of 50 cookies per domain. (4kb x 50 = 200kb total for .domain.com)</li>
+          <li>Maximum of 3,000 cookies total</li>
+        </ul>
+
+        See the officials: <a href="https://www.ietf.org/rfc/rfc6265.txt"
+          target="_blank">https://www.ietf.org/rfc/rfc6265.txt</a>
+      </div>
+      <div class="large-4 cell">Made with ❤️ by <a href="https://davidlozzi.com">David Lozzi</a><br />
+        Hosted on <a href="https://github.com/DavidLozzi/cookies">github</a><br />
+        Props to <a href="https://get.foundation" target="_blank">Foundation</a> for the CSS
       </div>
     </div>
     <script>
@@ -38,7 +49,7 @@
           const cookies = cookie.split(';')
           const output = document.getElementById("output")
           output.innerHTML = `<div class="grid-x grid-padding-x"><div class='large-12 cell' id='length'>${cookies.length} cookies</div></div>`
-          output.innerHTML += `<div class="grid-x grid-padding-x">` +
+          output.innerHTML += `<div class="grid-x grid-padding-x header">` +
             `<div class='large-4 cell'>name</div>` +
             `<div class='large-2 cell'>size</div>` +
             `<div class='large-6 cell'>value</div></div>`
